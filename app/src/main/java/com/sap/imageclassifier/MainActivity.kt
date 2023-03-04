@@ -1,5 +1,6 @@
 package com.sap.imageclassifier
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import com.sap.imageclassifier.camera.CameraActivity
 import com.sap.imageclassifier.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +25,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val string = "Hello"
+
+        //Manish patil
+
+        binding.floatingActionButton.setOnClickListener{
+            val intent = Intent(this, CameraActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 }
