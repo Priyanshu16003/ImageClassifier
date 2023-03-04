@@ -1,15 +1,9 @@
 package com.sap.imageclassifier.camera
 
-import android.graphics.Insets.add
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.sap.imageclassifier.databinding.ActivityCameraBinding
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 import android.Manifest
 import android.content.ContentValues
 import android.content.pm.PackageManager
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -18,6 +12,11 @@ import androidx.camera.core.ImageCapture
 import androidx.camera.video.Recorder
 import androidx.camera.video.Recording
 import androidx.camera.video.VideoCapture
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import android.widget.Toast
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.core.Preview
 import androidx.camera.core.CameraSelector
@@ -31,11 +30,11 @@ import androidx.camera.video.Quality
 import androidx.camera.video.QualitySelector
 import androidx.camera.video.VideoRecordEvent
 import androidx.core.content.PermissionChecker
-import com.sap.imageclassifier.databinding.ActivityMainBinding
+import com.sap.imageclassifier.R
+import com.sap.imageclassifier.databinding.ActivityCameraBinding
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.Locale
-
 class CameraActivity : AppCompatActivity() {
 
     private lateinit var cameraExecutor: ExecutorService
@@ -74,7 +73,7 @@ class CameraActivity : AppCompatActivity() {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
             put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
             if(Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CameraX-Image")
+                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/Image Classifier")
             }
         }
 
@@ -97,6 +96,8 @@ class CameraActivity : AppCompatActivity() {
 
                 override fun
                         onImageSaved(output: ImageCapture.OutputFileResults){
+                    var mediaPlayer = MediaPlayer.create(baseContext, R.raw.shutter)
+                    mediaPlayer.start()
                     val msg = "Photo capture succeeded: ${output.savedUri}"
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
@@ -119,6 +120,9 @@ class CameraActivity : AppCompatActivity() {
                     it.setSurfaceProvider(binding.previewView.surfaceProvider)
                 }
 
+            imageCapture = ImageCapture.Builder()
+                .build()
+
             // Select back camera as a default
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
@@ -128,7 +132,7 @@ class CameraActivity : AppCompatActivity() {
 
                 // Bind use cases to camera
                 cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview)
+                    this, cameraSelector, preview, imageCapture)
 
             } catch(exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
@@ -168,14 +172,12 @@ class CameraActivity : AppCompatActivity() {
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS =
             mutableListOf(
-                Manifest.permission.CAMERA,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                Manifest.permission.CAMERA
             ).apply {
                 if ( Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
                     add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 }
             }.toTypedArray()
-
     }
 
 }
