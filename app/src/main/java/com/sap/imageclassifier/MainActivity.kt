@@ -25,6 +25,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        //Manish patil
+
         binding.floatingActionButton.setOnClickListener{
             val intent = Intent(this, CameraActivity::class.java)
             startActivity(intent)
