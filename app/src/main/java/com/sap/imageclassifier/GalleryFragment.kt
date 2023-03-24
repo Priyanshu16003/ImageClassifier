@@ -28,7 +28,7 @@ import java.io.FileNotFoundException
 
 class GalleryFragment : Fragment() {
     private lateinit var binding: FragmentGalleryBinding
-   // private lateinit var imageUris: MutableList<Uri>
+
     private var imageUris: ArrayList<Uri> = ArrayList()
 
 
@@ -44,19 +44,19 @@ class GalleryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Check for external storage permission
+
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // Request permission if it hasn't been granted
+
             requestPermissions(
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                 REQUEST_EXTERNAL_STORAGE_PERMISSION
             )
         } else {
-            // Load images if permission has already been granted
+
             loadImage()
         }
     }
@@ -69,10 +69,9 @@ class GalleryFragment : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_EXTERNAL_STORAGE_PERMISSION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted, load images
                 loadImage()
             } else {
-                // Permission denied, show error message
+
                 Toast.makeText(
                     requireContext(),
                     "External storage permission required to view images",
@@ -87,10 +86,10 @@ class GalleryFragment : Fragment() {
         binding.imageGridView.adapter = ImageAdapter(requireContext(), imageUris)
         binding.imageGridView.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
-                // Get the selected image URI
+
                 val selectedImageUri = imageUris[position]
 
-                // Create an Intent to open the image in a dialog
+
                 val intent = Intent(requireContext(), ImageDialogActivity::class.java)
                 intent.data = selectedImageUri
 
