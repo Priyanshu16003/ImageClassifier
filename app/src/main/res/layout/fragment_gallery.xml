@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/seed"
-    tools:context=".GalleryFragment">
+    tools:context=".GalleryFragment"
+    android:fitsSystemWindows="true">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <GridView
+        android:id="@+id/imageGridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/gallerya" />
+        android:columnWidth="100dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="8dp"
+        android:horizontalSpacing="8dp"
+        android:stretchMode="columnWidth" />
 
-</FrameLayout>
+</RelativeLayout>
+
