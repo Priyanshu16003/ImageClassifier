@@ -8,39 +8,29 @@ import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
-import androidx.camera.video.Recorder
-import androidx.camera.video.Recording
-import androidx.camera.video.VideoCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import android.widget.Toast
-import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.core.Preview
-import androidx.camera.core.CameraSelector
-import android.util.Log
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.ImageProxy
-import androidx.camera.video.FallbackStrategy
-import androidx.camera.video.MediaStoreOutputOptions
-import androidx.camera.video.Quality
-import androidx.camera.video.QualitySelector
-import androidx.camera.video.VideoRecordEvent
-import androidx.core.content.PermissionChecker
 import com.sap.imageclassifier.R
 import com.sap.imageclassifier.databinding.ActivityCameraBinding
-import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
-import java.util.Locale
+import java.util.*
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+
 class CameraActivity : AppCompatActivity() {
 
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var binding : ActivityCameraBinding
     private var imageCapture : ImageCapture? = null
+    private lateinit var mediaPlayer: MediaPlayer
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,17 +39,22 @@ class CameraActivity : AppCompatActivity() {
         binding = ActivityCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if(allPermissionsGranted()){
-            startCamera()
-        } else {
-            ActivityCompat.requestPermissions( this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
-        }
+        try {
+            if(allPermissionsGranted()){
+                startCamera()
+            } else {
+                ActivityCompat.requestPermissions( this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+            }
 
-        binding.imageCaptureButton.setOnClickListener {
-            takePhoto()
-        }
+            binding.imageCaptureButton.setOnClickListener {
+                takePhoto()
+            }
 
-        cameraExecutor = Executors.newSingleThreadExecutor()
+            cameraExecutor = Executors.newSingleThreadExecutor()
+        }
+        catch (e : Exception){
+            e.printStackTrace()
+        }
 
     }
 
@@ -98,7 +93,7 @@ class CameraActivity : AppCompatActivity() {
 
                 override fun
                         onImageSaved(output: ImageCapture.OutputFileResults){
-                    var mediaPlayer = MediaPlayer.create(baseContext, R.raw.shutter)
+                    mediaPlayer = MediaPlayer.create(baseContext, R.raw.shutter)
                     mediaPlayer.start()
                     val msg = "Photo capture succeeded: ${output.savedUri}"
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
@@ -149,7 +144,15 @@ class CameraActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        cameraExecutor.shutdown()
+
+        try {
+            mediaPlayer.release()
+            cameraExecutor.shutdown()
+        }
+        catch (e : Exception){
+            e.printStackTrace()
+        }
+
     }
 
     override fun onRequestPermissionsResult(
@@ -181,5 +184,4 @@ class CameraActivity : AppCompatActivity() {
                 }
             }.toTypedArray()
     }
-
 }

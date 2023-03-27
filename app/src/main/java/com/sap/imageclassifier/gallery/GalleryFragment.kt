@@ -1,4 +1,4 @@
-package com.sap.imageclassifier
+package com.sap.imageclassifier.gallery
 
 import android.Manifest
 import android.content.ContentUris
@@ -6,24 +6,15 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.requestPermissions
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.viewbinding.ViewBinding
 import com.sap.imageclassifier.databinding.FragmentGalleryBinding
-import kotlinx.coroutines.NonDisposableHandle.parent
-import java.io.File
-import java.io.FileNotFoundException
-
 
 
 class GalleryFragment : Fragment() {
@@ -89,14 +80,12 @@ class GalleryFragment : Fragment() {
 
                 val selectedImageUri = imageUris[position]
 
-
                 val intent = Intent(requireContext(), ImageDialogActivity::class.java)
                 intent.data = selectedImageUri
 
                 startActivity(intent)
             }
     }
-
 
 
     private fun getImagesFromExternalStorage(): MutableList<Uri> {

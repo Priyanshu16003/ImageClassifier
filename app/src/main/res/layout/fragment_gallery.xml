@@ -3,18 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/seed"
-    tools:context=".GalleryFragment"
+    tools:context=".gallery.GalleryFragment"
     android:fitsSystemWindows="true">
 
     <GridView
         android:id="@+id/imageGridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnWidth="100dp"
-        android:numColumns="auto_fit"
-        android:verticalSpacing="8dp"
-        android:horizontalSpacing="8dp"
+        android:columnWidth="@dimen/gallery_image_file_size"
+        android:numColumns="4"
         android:stretchMode="columnWidth" />
 
 </RelativeLayout>

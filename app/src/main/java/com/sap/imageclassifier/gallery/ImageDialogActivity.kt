@@ -1,9 +1,10 @@
-package com.sap.imageclassifier
+package com.sap.imageclassifier.gallery
 
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
+import com.sap.imageclassifier.R
 
 class ImageDialogActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -14,7 +15,6 @@ class ImageDialogActivity : AppCompatActivity() {
 
 
         val selectedImageUri = intent.data
-
 
         Glide.with(this)
             .load(selectedImageUri)

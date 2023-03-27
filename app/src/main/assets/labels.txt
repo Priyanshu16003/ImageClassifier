@@ -1,0 +1,11 @@
+0 Beach
+1 Forest
+2 Mountains
+3 Bikes
+4 Monuments
+5 Persons
+6 Drawings
+7 Paintings
+8 Sculptures
+9 Cars
+10 Pets

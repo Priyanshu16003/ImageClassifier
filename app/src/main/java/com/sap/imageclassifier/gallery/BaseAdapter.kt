@@ -1,4 +1,4 @@
-package com.sap.imageclassifier
+package com.sap.imageclassifier.gallery
 
 import android.content.Context
 import android.net.Uri
@@ -28,9 +28,9 @@ class ImageAdapter(private val context: Context, private val imagePaths: ArrayLi
 
         if (convertView == null) {
             imageView = ImageView(context)
-            imageView.layoutParams = ViewGroup.LayoutParams(200, 200)
+            imageView.layoutParams = ViewGroup.LayoutParams(286, 286)
             imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-            imageView.setPadding(8, 8, 8, 8)
+            imageView.setPadding(0, 0, 0, 0)
         } else {
             imageView = convertView as ImageView
         }
