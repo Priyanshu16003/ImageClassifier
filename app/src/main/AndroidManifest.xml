@@ -21,6 +21,9 @@
         android:theme="@style/Base.Theme.ImageClassifier"
         tools:targetApi="31">
         <activity
+            android:name=".CatagoryImage"
+            android:exported="false" />
+        <activity
             android:name=".gallery.ImageDialogActivity"
             android:exported="false" />
         <activity

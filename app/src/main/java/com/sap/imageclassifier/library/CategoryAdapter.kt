@@ -1,28 +1,24 @@
 package com.sap.imageclassifier.library
 
-import android.app.Activity
-import android.content.Context
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.GlideContext
-import com.sap.imageclassifier.MainActivity
 import com.sap.imageclassifier.R
-import kotlin.coroutines.coroutineContext
+import kotlin.reflect.KFunction1
 
-class CategoryAdapter(val data: HashMap<Int, HashMap<String, Array<Uri>>>) :
+class CategoryAdapter(val data: HashMap<Int, HashMap<String, Array<Uri>>>, private val onCardClick: KFunction1<Array<Uri>, Unit>) :
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val categoryNameTextView: TextView = itemView.findViewById(R.id.cat_name)
         val categoryImageView: ImageView = itemView.findViewById(R.id.image_view)
+        val catagoryCard : CardView = itemView.findViewById(R.id.cardview)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -47,6 +43,11 @@ class CategoryAdapter(val data: HashMap<Int, HashMap<String, Array<Uri>>>) :
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.gallery_thumbnail)
                 .into(holder.categoryImageView)
+
+        holder.catagoryCard.setOnClickListener {
+            categoryImages?.let { it1 -> onCardClick(it1) }
+        }
+
     }
 
     override fun getItemCount(): Int {

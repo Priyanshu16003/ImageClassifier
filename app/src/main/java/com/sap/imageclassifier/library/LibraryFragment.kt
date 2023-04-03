@@ -1,6 +1,7 @@
 package com.sap.imageclassifier.library
 
 import android.content.ContentUris
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -11,11 +12,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.sap.imageclassifier.R
+import com.sap.imageclassifier.CatagoryImage
 import com.sap.imageclassifier.databinding.FragmentLibraryBinding
 import com.sap.imageclassifier.ml.ModelUnquant
 import kotlinx.coroutines.*
@@ -149,7 +148,7 @@ class LibraryFragment : Fragment() {
                     }
 
                     withContext(Dispatchers.Main) {
-                        val categoryAdapter = CategoryAdapter(hashMap)
+                        val categoryAdapter = CategoryAdapter(hashMap, ::onCardClick)
                         val layoutManager = GridLayoutManager(context, 3)
                         binding.catRecyclerView.layoutManager = layoutManager
                         binding.catRecyclerView.adapter = categoryAdapter
@@ -207,6 +206,12 @@ class LibraryFragment : Fragment() {
             cursor.close()
         }
         return imageUris
+    }
+
+    private fun onCardClick ( array : Array<Uri>){
+        val intent = Intent(context, CatagoryImage::class.java)
+        intent.putExtra("image", array)
+        startActivity(intent)
     }
 
     override fun onDestroy() {
